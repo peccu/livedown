@@ -50,16 +50,21 @@ function Server (opts) {
     server.listen(self.port, next)
   }
 
+  this.emitContent = function (filePath) {
+    var self = this
+    const ext = path.extname(filePath).replace(/^./, '')
+    const render = renderer[ext] || renderer._
+    fs.readFile(filePath, 'utf8', function (err, data) {
+      if (err) throw err
+      data = data || ''
+      self.sock.emit('content', render(data))
+    })
+  }
+
   this.watch = function (_path) {
     var self = this
-    const ext = path.extname(_path).replace(/^./, '')
-    const render = renderer[ext] || renderer._
     chokidar.watch(_path).on('change', function (_path, stats) {
-      fs.readFile(_path, 'utf8', function (err, data) {
-        if (err) throw err
-        data = data || ''
-        self.sock.emit('content', render(data))
-      })
+      self.emitContent(_path)
     })
   }
 }
@@ -88,13 +93,7 @@ Server.prototype.start = function (filePath, next) {
   io.on('connection', function (sock) {
     self.sock = sock
     self.sock.emit('title', path.basename(filePath))
-    const ext = path.extname(filePath).replace(/^./, '')
-    const render = renderer[ext] || renderer._
-    fs.readFile(filePath, 'utf8', function (err, data) {
-      if (err) throw err
-      data = data || ''
-      self.sock.emit('content', render(data))
-    })
+    self.emitContent(filePath)
   })
 
   app.use(parser.json())
