@@ -7,25 +7,8 @@ var socket = require('socket.io')
 var chokidar = require('chokidar')
 var parser = require('body-parser')
 var request = require('request')
-var markdownIt = require('markdown-it')
-var markdownItTaskCheckbox = require('markdown-it-task-checkbox')
-var markdownItEmoji = require('markdown-it-emoji')
-var markdownItGitHubHeadings = require('markdown-it-github-headings')
 
-var md = markdownIt({
-  html: true,
-  linkify: true
-})
-md.use(markdownItTaskCheckbox)
-md.use(markdownItEmoji)
-md.use(markdownItGitHubHeadings, {
-  prefix: ''
-})
-
-const renderer = {
-  md: src => md.render(src),
-  _: src => `<pre>${src}</pre>`
-}
+var renderer = require('./renderer')
 
 var app = express()
 var server = http.Server(app)
