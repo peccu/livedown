@@ -45,10 +45,10 @@ function Server (opts) {
     server.listen(self.port, next)
   }
 
-  this.watch = function (path) {
+  this.watch = function (_path) {
     var self = this
-    chokidar.watch(path).on('change', function (path, stats) {
-      fs.readFile(path, 'utf8', function (err, data) {
+    chokidar.watch(_path).on('change', function (_path, stats) {
+      fs.readFile(_path, 'utf8', function (err, data) {
         if (err) throw err
         data = data || ''
         self.sock.emit('content', md.render(data))
