@@ -47,6 +47,7 @@ function Server (opts) {
   this.watch = function (_path) {
     var self = this
     chokidar.watch(_path).on('change', function (_path, stats) {
+      console.log('change detected')
       self.emitContent(_path)
     })
   }
