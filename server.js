@@ -7,20 +7,8 @@ var socket = require('socket.io')
 var chokidar = require('chokidar')
 var parser = require('body-parser')
 var request = require('request')
-var markdownIt = require('markdown-it')
-var markdownItTaskCheckbox = require('markdown-it-task-checkbox')
-var markdownItEmoji = require('markdown-it-emoji')
-var markdownItGitHubHeadings = require('markdown-it-github-headings')
 
-var md = markdownIt({
-  html: true,
-  linkify: true
-})
-md.use(markdownItTaskCheckbox)
-md.use(markdownItEmoji)
-md.use(markdownItGitHubHeadings, {
-  prefix: ''
-})
+var renderer = require('./renderer')
 
 var app = express()
 var server = http.Server(app)
@@ -45,14 +33,21 @@ function Server (opts) {
     server.listen(self.port, next)
   }
 
-  this.watch = function (path) {
+  this.emitContent = function (filePath) {
     var self = this
-    chokidar.watch(path).on('change', function (path, stats) {
-      fs.readFile(path, 'utf8', function (err, data) {
-        if (err) throw err
-        data = data || ''
-        self.sock.emit('content', md.render(data))
-      })
+    const ext = path.extname(filePath).replace(/^./, '')
+    const render = renderer[ext] || renderer._
+    fs.readFile(filePath, 'utf8', function (err, data) {
+      if (err) throw err
+      data = data || ''
+      self.sock.emit('content', render(data))
+    })
+  }
+
+  this.watch = function (_path) {
+    var self = this
+    chokidar.watch(_path).on('change', function (_path, stats) {
+      self.emitContent(_path)
     })
   }
 }
@@ -81,11 +76,7 @@ Server.prototype.start = function (filePath, next) {
   io.on('connection', function (sock) {
     self.sock = sock
     self.sock.emit('title', path.basename(filePath))
-    fs.readFile(filePath, 'utf8', function (err, data) {
-      if (err) throw err
-      data = data || ''
-      self.sock.emit('content', md.render(data))
-    })
+    self.emitContent(filePath)
   })
 
   app.use(parser.json())
