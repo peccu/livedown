@@ -11,14 +11,10 @@ const renderer = {
   plantuml: plantuml,
   puml: plantuml,
   svg: {
-    render: wrap(id),
-    script: [],
-    style: []
+    render: wrap(id)
   },
   _: {
-    render: wrap(pre),
-    script: [],
-    style: []
+    render: wrap(pre)
   }
 }
 

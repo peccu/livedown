@@ -71,7 +71,5 @@ const urlTextFrom = function (src) {
 }
 
 module.exports = {
-  render: wrap(src => `<img src="${makeURL(src)}"/>`),
-  script: [],
-  style: []
+  render: wrap(src => `<img src="${makeURL(src)}"/>`)
 }
