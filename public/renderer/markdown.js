@@ -1,3 +1,4 @@
+/* global hljs, $ */
 hljs.configure({languages: []})
 
 onContentHook.push(data => {

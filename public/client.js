@@ -1,4 +1,4 @@
-/* global io, hljs, $ */
+/* global io, $ */
 
 var socket = io.connect(window.location.origin)
 
@@ -14,11 +14,11 @@ socket.on('title', function (data) {
 })
 
 socket.on('script', function (path) {
-  document.body.appendChild($('<script>').attr('src', path)[0]);
+  document.body.appendChild($('<script>').attr('src', path)[0])
 })
 
 socket.on('style', function (path) {
-  document.head.appendChild($('<link rel="stylesheet">').attr('href', path)[0]);
+  document.head.appendChild($('<link rel="stylesheet">').attr('href', path)[0])
 })
 
 socket.on('kill', function () {
