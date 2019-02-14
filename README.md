@@ -2,7 +2,7 @@
 
 ![](https://twobucks.co/assets/livedown.gif)
 
-[![Build Status](https://travis-ci.org/peccu/livedown.svg)](https://travis-ci.org/peccu/livedown)
+[![Build Status](https://travis-ci.com/peccu/livedown.svg)](https://travis-ci.com/peccu/livedown)
 
 Live ~~markdown~~ file previews for your favorite editor. This is forked from [shime/livedown](https://github.com/shime/livedown).
 
