@@ -1,5 +1,6 @@
 var path = require('path')
 var fs = require('fs')
+const { promisify } = require('util')
 
 var express = require('express')
 var http = require('http')
@@ -33,15 +34,13 @@ function Server (opts) {
     server.listen(self.port, next)
   }
 
-  this.emitContent = function (filePath) {
+  this.emitContent = async function (filePath) {
     var self = this
     const ext = path.extname(filePath).replace(/^./, '')
     const render = renderer[ext] || renderer._
-    fs.readFile(filePath, 'utf8', function (err, data) {
-      if (err) throw err
-      data = data || ''
-      self.sock.emit('content', render(data))
-    })
+    let data = await promisify(fs.readFile)(filePath, 'utf8')
+    data = data || ''
+    self.sock.emit('content', await promisify(render)(data))
   }
 
   this.watch = function (_path) {
