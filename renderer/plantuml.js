@@ -1,24 +1,72 @@
-// var plantuml = require('node-plantuml');
-// plantuml.useNailgun();
+// using methods and sample from
+// https://github.com/qjebbs/vscode-plantuml
+// http://plantuml.com/code-javascript-synchronous
 
-const { spawnSync } = require('child_process');
+const zlib = require('zlib')
+const server = 'http://www.plantuml.com/plantuml/svg'
 
-const render = function (src) {
-  // var decode = plantuml.decode(src);
-  // var gen = plantuml.generate({format: 'svg'});
-  // decode.out.pipe(gen.in);
-  // gen.out.pipe(res);
-
-  const plantuml = spawnSync(
-    'java',
-    ['-jar', '/Users/peccu/Downloads/plantuml.jar', '-tsvg', '-pipe'],
-    {
-      input: src
-    })
-  console.log('finished')
-  // console.log(plantuml.stdout.toString())
-  // console.log(plantuml.stderr.toString())
-  return plantuml.stdout.toString()
+const makeURL = function (src) {
+  return [server, urlTextFrom(src)].join('/')
 }
 
-module.exports = src => render(src)
+// from synchro.js
+/* Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
+ * Version: 1.0.1
+ * LastModified: Dec 25 1999
+ */
+function encode64 (data) {
+  let r = ""
+  for (let i = 0; i < data.length; i += 3) {
+    if (i + 2 == data.length) {
+      r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), 0)
+    } else if (i + 1 == data.length) {
+      r += append3bytes(data.charCodeAt(i), 0, 0)
+    } else {
+      r += append3bytes(data.charCodeAt(i), data.charCodeAt(i + 1), data.charCodeAt(i + 2))
+    }
+  }
+  return r
+}
+
+function append3bytes(b1, b2, b3) {
+  let c1 = b1 >> 2
+  let c2 = ((b1 & 0x3) << 4) | (b2 >> 4)
+  let c3 = ((b2 & 0xF) << 2) | (b3 >> 6)
+  let c4 = b3 & 0x3F
+  let r = ""
+  r += encode6bit(c1 & 0x3F)
+  r += encode6bit(c2 & 0x3F)
+  r += encode6bit(c3 & 0x3F)
+  r += encode6bit(c4 & 0x3F)
+  return r
+}
+function encode6bit(b) {
+  if (b < 10) {
+    return String.fromCharCode(48 + b)
+  }
+  b -= 10
+  if (b < 26) {
+    return String.fromCharCode(65 + b)
+  }
+  b -= 26
+  if (b < 26) {
+    return String.fromCharCode(97 + b)
+  }
+  b -= 26
+  if (b == 0) {
+    return '-'
+  }
+  if (b == 1) {
+    return '_'
+  }
+  return '?'
+}
+
+const urlTextFrom = function (src) {
+  let option = { level: 9 }
+  let deflated = zlib.deflateRawSync(new Buffer(src), option)
+  let b = encode64(String.fromCharCode(...deflated.subarray(0)))
+  return b
+}
+
+module.exports = src => `<img src="${makeURL(src)}"/>`
