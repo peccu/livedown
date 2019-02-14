@@ -1,3 +1,4 @@
+const wrap = require('./wrap')
 // using methods and sample from
 // https://github.com/qjebbs/vscode-plantuml
 // http://plantuml.com/code-javascript-synchronous
@@ -69,4 +70,8 @@ const urlTextFrom = function (src) {
   return b
 }
 
-module.exports = src => `<img src="${makeURL(src)}"/>`
+module.exports = {
+  render: wrap(src => `<img src="${makeURL(src)}"/>`),
+  script: [],
+  style: []
+}

@@ -1,3 +1,4 @@
+const wrap = require('./wrap')
 var markdownIt = require('markdown-it')
 var markdownItTaskCheckbox = require('markdown-it-task-checkbox')
 var markdownItEmoji = require('markdown-it-emoji')
@@ -13,4 +14,14 @@ md.use(markdownItGitHubHeadings, {
   prefix: ''
 })
 
-module.exports = src => md.render(src)
+module.exports = {
+    render: wrap(src => md.render(src)),
+    script: [
+      '/vendor/highlight.min.js',
+      '/renderer/markdown.js'
+    ],
+    style: [
+      '/vendor/github-markdown.css',
+      '/vendor/github.css'
+    ]
+  }
