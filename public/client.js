@@ -1,21 +1,24 @@
-/* global io, hljs, $ */
+/* global io, $ */
 
 var socket = io.connect(window.location.origin)
 
-hljs.configure({languages: []})
+let onContentHook = []
 
 socket.on('content', function (data) {
   $('.markdown-body').html(data)
-  $('code').each(function (_, block) {
-    $(this).parent().addClass($(this).attr('class'))
-  })
-  $('pre').each(function (_, block) {
-    hljs.highlightBlock(block)
-  })
+  onContentHook.map(e => e(data))
 })
 
 socket.on('title', function (data) {
   $('title').html(data)
+})
+
+socket.on('script', function (path) {
+  document.body.appendChild($('<script>').attr('src', path)[0])
+})
+
+socket.on('style', function (path) {
+  document.head.appendChild($('<link rel="stylesheet">').attr('href', path)[0])
 })
 
 socket.on('kill', function () {

@@ -9,11 +9,37 @@ const id = src => src
 const pre = src => `<pre>${src}</pre>`
 
 const renderer = {
-  md: wrap(markdown),
-  plantuml: wrap(plantuml),
-  puml: wrap(plantuml),
-  svg: wrap(id),
-  _: wrap(pre)
+  md: {
+    render: wrap(markdown),
+    script: [
+      '/vendor/highlight.min.js',
+      '/renderer/markdown.js'
+    ],
+    style: [
+      '/vendor/github-markdown.css',
+      '/vendor/github.css'
+    ]
+  },
+  plantuml: {
+    render: wrap(plantuml),
+    script: [],
+    style: []
+  },
+  puml: {
+    render: wrap(plantuml),
+    script: [],
+    style: []
+  },
+  svg: {
+    render: wrap(id),
+    script: [],
+    style: []
+  },
+  _: {
+    render: wrap(pre),
+    script: [],
+    style: []
+  }
 }
 
 module.exports = renderer
