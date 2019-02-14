@@ -2,10 +2,9 @@
 
 ![](https://twobucks.co/assets/livedown.gif)
 
-[![Build Status](https://travis-ci.org/shime/livedown.svg)](https://travis-ci.org/shime/livedown)
-[![Downloads](https://img.shields.io/npm/dt/livedown.svg)](https://npmjs.org/package/livedown)
+[![Build Status](https://travis-ci.org/peccu/livedown.svg)](https://travis-ci.org/peccu/livedown)
 
-Live markdown previews for your favorite editor.
+Live ~~markdown~~ file previews for your favorite editor. This is forked from [shime/livedown](https://github.com/shime/livedown).
 
 * [Vim plugin](https://github.com/shime/vim-livedown)
 * [Emacs plugin](https://github.com/shime/emacs-livedown)
@@ -18,12 +17,17 @@ Live markdown previews for your favorite editor.
 * GitHub flavored clickable headings/permalinks
 * GitHub flavored checkboxes
 * Real-time instant preview
+* Multi filetype support
+  * Markdown (`.md`, `.markdown`)
+  * PlantUML (`.plantuml`, `.puml`)
+  * SVG (`.svg`)
+  * other (`.*` for raw content wrapped by `<pre>`)
 
 And more!
 
 ## Installation
 
-    $ npm install -g livedown
+    $ npm install -g peccu/livedown
 
 ## Usage
 
@@ -31,6 +35,7 @@ And more!
 
 ## Alternatives
 
+* Original [livedown](https://github.com/shime/livedown)
 * [vim-instant-markdown](https://github.com/suan/vim-instant-markdown)
 * [octodown](https://github.com/ianks/octodown)
 * [vmd](https://github.com/yoshuawuyts/vmd)
