@@ -1,5 +1,5 @@
-const markdown = require('./renderer/markdown')
-const plantuml = require('./renderer/plantuml')
+const markdown = require('./markdown')
+const plantuml = require('./plantuml')
 
 const renderer = {
   md: markdown,
