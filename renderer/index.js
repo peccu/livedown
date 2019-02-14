@@ -5,6 +5,7 @@ const renderer = {
   md: markdown,
   plantuml: plantuml,
   puml: plantuml,
+  svg: src => src,
   _: src => `<pre>${src}</pre>`
 }
 
