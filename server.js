@@ -1,6 +1,7 @@
 var path = require('path')
 var fs = require('fs')
 const { promisify } = require('util')
+var ip = require('ip')
 
 var express = require('express')
 var http = require('http')
@@ -28,6 +29,7 @@ function Server (opts) {
 
   this.port = opts.port || 1337
   this.URI = 'http://localhost:' + this.port
+  this.URI = 'http://' + (ip.address() || 'localhost') + ':' + this.port
   this.sock = { emit: function () {} }
 
   this.listen = function (next) {
