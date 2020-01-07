@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "body-parser": "^1.9.2",
-    "chokidar": "^2.0.0",
+    "chokidar": "^3.0.0",
     "express": "^4.10.2",
     "markdown-it": "^8.3.1",
     "markdown-it-emoji": "^1.4.0",
@@ -25,10 +25,10 @@
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^3.5.0",
+    "mocha": "^6.2.0",
     "np": "^2.9.0",
-    "standard": "^10.0.2",
-    "zombie": "^5.0.7"
+    "standard": "^14.3.1",
+    "zombie": "^6.1.4"
   },
   "homepage": "https://github.com/shime/livedown",
   "keywords": [
