@@ -39,7 +39,7 @@ function Server (opts) {
     const ext = path.extname(filePath).replace(/^./, '')
     renderer[ext] && renderer[ext].style && renderer[ext].style.map(path => self.sock.emit('style', path))
     renderer[ext] && renderer[ext].script && renderer[ext].script.map(path => self.sock.emit('script', path))
-    const render = renderer[ext].render || renderer._.render
+    const render = (renderer[ext] && renderer[ext].render) || renderer._.render
     let data = await promisify(fs.readFile)(filePath, 'utf8')
     data = data || ''
     self.sock.emit('content', await promisify(render)(data))
